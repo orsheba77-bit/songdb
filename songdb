@@ -1,0 +1,18 @@
+# נווט לתיקיית הפרויקט
+cd /path/to/songdb
+
+# אתחל git (אם עוד לא עשית)
+git init
+
+# הוסף את כל הקבצים
+git add .
+
+# צור commit ראשון
+git commit -m "Initial commit - SongDB with Israeli music features"
+
+# הגדר את ה-remote
+git branch -M main
+git remote add origin https://github.com/YOUR_USERNAME/songdb.git
+
+# דחוף ל-GitHub
+git push -u origin main
