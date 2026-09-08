@@ -1,3 +1,11 @@
+import sys
+print("DEBUG: Starting main.py", file=sys.stderr)
+try:
+    from fastapi import FastAPI
+    print("DEBUG: FastAPI imported", file=sys.stderr)
+except Exception as e:
+    print(f"DEBUG: Failed to import FastAPI: {e}", file=sys.stderr)
+    raise
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database import engine, Base
