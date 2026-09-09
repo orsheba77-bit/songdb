@@ -1,28 +1,47 @@
 import sys
-print("DEBUG: Starting main.py", file=sys.stderr)
-try:
-    from fastapi import FastAPI
-    print("DEBUG: FastAPI imported", file=sys.stderr)
-except Exception as e:
-    print(f"DEBUG: Failed to import FastAPI: {e}", file=sys.stderr)
-    raise
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database import engine, Base
+
+print("✅ Starting main.py", file=sys.stderr)
+
+# ייבוא ישיר של כל ראוטר עם הדפסה בין לבין
 try:
-    from routers import auth_router, songs_router, ratings_router, recommendations_router
-    print("✅ All routers imported successfully")
-except ImportError as e:
-    print(f"❌ Router Import Error: {e}")
-    raise
+    from routers.auth_router import router as auth_router
+    print("✅ Auth router imported", file=sys.stderr)
 except Exception as e:
-    print(f"❌ General Startup Error: {e}")
+    print(f"❌ Failed to import auth_router: {e}", file=sys.stderr)
+    raise
+
+try:
+    from routers.songs_router import router as songs_router
+    print("✅ Songs router imported", file=sys.stderr)
+except Exception as e:
+    print(f"❌ Failed to import songs_router: {e}", file=sys.stderr)
+    raise
+
+try:
+    from routers.ratings_router import router as ratings_router
+    print("✅ Ratings router imported", file=sys.stderr)
+except Exception as e:
+    print(f" Failed to import ratings_router: {e}", file=sys.stderr)
+    raise
+
+try:
+    from routers.recommendations_router import router as recommendations_router
+    print("✅ Recommendations router imported", file=sys.stderr)
+except Exception as e:
+    print(f" Failed to import recommendations_router: {e}", file=sys.stderr)
     raise
 
 # יצירת הטבלאות במסד הנתונים
+print(" Creating database tables...", file=sys.stderr)
 Base.metadata.create_all(bind=engine)
+print("✅ Database tables created", file=sys.stderr)
 
+# יצירת האפליקציה
 app = FastAPI(title="SongDB - The IMDB of Music", version="3.0.0")
+print("✅ App created", file=sys.stderr)
 
 # הגדרות CORS
 app.add_middleware(
@@ -32,12 +51,14 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+print("✅ CORS configured", file=sys.stderr)
 
-# חיבור הנתבים
-app.include_router(auth_router.router)
-app.include_router(songs_router.router)
-app.include_router(ratings_router.router)
-app.include_router(recommendations_router.router)
+# חיבור הנתבים (שים לב: אנחנו מוסיפים את 'router' כי ייבאנו אותו כ-'auth_router')
+app.include_router(auth_router)
+app.include_router(songs_router)
+app.include_router(ratings_router)
+app.include_router(recommendations_router)
+print("✅ All routers included", file=sys.stderr)
 
 @app.get("/")
 def root():
@@ -46,3 +67,5 @@ def root():
 @app.get("/health")
 def health_check():
     return {"status": "healthy"}
+
+print("🚀 Server startup complete!", file=sys.stderr)
