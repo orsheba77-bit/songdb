@@ -53,10 +53,10 @@ app.add_middleware(
 print("✅ CORS configured", file=sys.stderr)
 
 # חיבור הנתבים (שים לב: אנחנו מוסיפים את 'router' כי ייבאנו אותו כ-'auth_router')
-app.include_router(auth_router, prefix="/auth", tags=["Auth"])
-app.include_router(songs_router, prefix="/songs", tags=["Songs"])
-app.include_router(ratings_router, prefix="/ratings", tags=["Ratings"])
-app.include_router(recommendations_router, prefix="/recommendations", tags=["Recommendations"])
+app.include_router(auth_router, prefix="/api/auth", tags=["Auth"])
+app.include_router(songs_router, prefix="/api/songs", tags=["Songs"])
+app.include_router(ratings_router, prefix="/api/ratings", tags=["Ratings"])
+app.include_router(recommendations_router, prefix="/api/recommendations", tags=["Recommendations"])
 print("✅ All routers included", file=sys.stderr)
 
 @app.get("/")
