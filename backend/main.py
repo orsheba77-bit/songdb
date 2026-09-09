@@ -36,7 +36,6 @@ except Exception as e:
 
 # יצירת הטבלאות במסד הנתונים
 print(" Creating database tables...", file=sys.stderr)
-Base.metadata.create_all(bind=engine)
 print("✅ Database tables created", file=sys.stderr)
 
 # יצירת האפליקציה
