@@ -9,7 +9,15 @@ except Exception as e:
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database import engine, Base
-from routers import auth_router, songs_router, ratings_router, recommendations_router
+try:
+    from routers import auth_router, songs_router, ratings_router, recommendations_router
+    print("✅ All routers imported successfully")
+except ImportError as e:
+    print(f"❌ Router Import Error: {e}")
+    raise
+except Exception as e:
+    print(f"❌ General Startup Error: {e}")
+    raise
 
 # יצירת הטבלאות במסד הנתונים
 Base.metadata.create_all(bind=engine)
